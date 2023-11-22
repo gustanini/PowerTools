@@ -81,11 +81,11 @@ function Get-TrustTicket{
 
     Write-Host `n"Printing: Mimikatz TGT command" `n -ForegroundColor Yellow 
     Write-Host $mimiTGT `n
-    Write-Host "Printing: Kekeo TGS" `n
+    Write-Host "Printing: Kekeo TGS command" `n -ForegroundColor Green
     Write-Host $kekeoTGS `n
 
-    Write-Host "Printing: Rubeus TGT" `n -ForegroundColor Yellow
+    Write-Host "Printing: Rubeus TGT command" `n -ForegroundColor Yellow
     Write-Host $rubeusTGT `n
-    Write-Host "Printing: Rubeus TGS" `n
+    Write-Host "Printing: Rubeus TGS command" `n -ForegroundColor Green 
     Write-Host $rubeusTGS `n
 }
