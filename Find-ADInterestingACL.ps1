@@ -15,6 +15,9 @@ function Find-ADInterestingACL {
     .PARAMETER Identity
     Specifies the identity to filter for in the ACLs. Think of it as the already compromised user you want to check. This is a mandatory parameter. The function will match this parameter value against the IdentityReference property of ACL entries.
 
+    .PARAMETER Domain
+    Specifies the domain to be used for the retrieval of Active Directory objects and their Access Control Lists (ACLs). If this parameter is not provided, the function operates in the current domain context.
+
     .EXAMPLE
     PS C:\> Find-ADInterestingACL -Identity 'CompromisedUser|CompromisedGroup'
     This example finds and lists all AD objects where the ACLs includes exploitable rights for 'CompromisedUser' and 'CompromisedGroup'.
@@ -39,13 +42,24 @@ function Find-ADInterestingACL {
     [CmdletBinding()]
     param (
         [string]$Rights = 'write|all|force|self',
-        [string]$Domain = (Get-ADDomain).DNSRoot,
         [Parameter(Mandatory = $true)]
-        [string]$Identity
+        [string]$Identity,
+        [string]$Domain
     )
+
+    # Create PSDrive for the specified domain
+    if ($Domain) {
+        New-PSDrive -Name AD2 -PSProvider ActiveDirectory -Server $Domain -Root "//RootDSE/"
+        $ADPathPrefix = "AD2:\"
+    } else {
+        # if no domain specified, use the domain of the current session
+        $Domain = (Get-AdDomain).DnsRoot
+        $ADPathPrefix = "AD:\"
+    }
+
     # Save all AD objects as DN for get-acl
     (Get-ADObject -Filter * -Server $Domain).DistinguishedName | ForEach-Object {
-        $acl = (Get-Acl -Path ("AD:\$_") -Filter *)
+        $acl = (Get-Acl -Path ("$ADPathPrefix$_") -Filter *)
 
         # filter using rights and identity
         $acl.Access | Where-Object {
@@ -56,10 +70,9 @@ function Find-ADInterestingACL {
             Expression = {$acl.PSPath -replace '.*DSE\/', ''}
         }, ActiveDirectoryRights, AccessControlType, IdentityReference
     } | Format-List
+
+    # Remove PSDrive if it was created
+    if ($ADPathPrefix -eq "AD2:\") {
+        Remove-PSDrive -Name AD2
+    }
 }
-
-<#
-One-Liner
-
-Get-ADObject -Filter * -Server Domain | %{$acl = Get-Acl -Path ("AD:\$_"); $acl.Access | ?{$_.ActiveDirectoryRights -match 'write|all|force|self' -and $_.IdentityReference -match 'User1|Group1|Group2' } | Select-Object @{Name='TargetDN'; Expression={$acl.PSPath -replace '.*DSE\/', ''}}, ActiveDirectoryRights, AccessControlType, IdentityReference } | fl
-#>
