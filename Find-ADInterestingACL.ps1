@@ -39,11 +39,12 @@ function Find-ADInterestingACL {
     [CmdletBinding()]
     param (
         [string]$Rights = 'write|all|force|self',
+        [string]$Domain = (Get-ADDomain).DNSRoot,
         [Parameter(Mandatory = $true)]
         [string]$Identity
     )
     # Save all AD objects as DN for get-acl
-    (Get-ADObject -Filter *).DistinguishedName | ForEach-Object {
+    (Get-ADObject -Filter * -Server $Domain).DistinguishedName | ForEach-Object {
         $acl = (Get-Acl -Path ("AD:\$_") -Filter *)
 
         # filter using rights and identity
@@ -60,5 +61,5 @@ function Find-ADInterestingACL {
 <#
 One-Liner
 
-Get-ADObject -Filter * | %{$acl = Get-Acl -Path ("AD:\$_"); $acl.Access | ?{$_.ActiveDirectoryRights -match 'write|all|force|self' -and $_.IdentityReference -match 'User1|Group1|Group2' } | Select-Object @{Name='TargetDN'; Expression={$acl.PSPath -replace '.*DSE\/', ''}}, ActiveDirectoryRights, AccessControlType, IdentityReference } | fl
+Get-ADObject -Filter * -Server Domain | %{$acl = Get-Acl -Path ("AD:\$_"); $acl.Access | ?{$_.ActiveDirectoryRights -match 'write|all|force|self' -and $_.IdentityReference -match 'User1|Group1|Group2' } | Select-Object @{Name='TargetDN'; Expression={$acl.PSPath -replace '.*DSE\/', ''}}, ActiveDirectoryRights, AccessControlType, IdentityReference } | fl
 #>
