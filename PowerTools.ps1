@@ -173,9 +173,9 @@ function Find-File {
 
     .NOTES
     File: Find-File.ps1
-    Author: [Your Name]
+    Author: Rafael Pimentel @gustanini
     Version: 1.0
-    Date: [Current Date]
+    Date: Nov 23 2023
     #>
     [CmdletBinding()]
     param(
