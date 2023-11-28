@@ -1,4 +1,4 @@
-function Find-File {
+function Find-File2 {
     <#
     .SYNOPSIS
     Searches for files containing a specified string in a specified path on a local or remote computer.
@@ -51,8 +51,7 @@ function Find-File {
         Invoke-Command -ComputerName $computerName -ScriptBlock {
                 Get-ChildItem -Path $Path -File -Recurse | 
                     Where-Object {$_.Name -match "$searchString"} -ErrorAction SilentlyContinue | 
-                        Select-Object Directory, Name | 
-                            Write-Host -ForegroundColor Green
+                        Select-Object Directory, Name
             }
     }
     
@@ -60,15 +59,13 @@ function Find-File {
     elseif ($Cifs){
         Get-ChildItem -Path "\\$computerName\$Path" -File -Recurse | 
             Where-Object {$_.Name -match "$searchString"} -ErrorAction SilentlyContinue | 
-                Select-Object Directory, Name | 
-                    Write-Host -ForegroundColor Green
+                Select-Object Directory, Name
     }
 
     # perform localhost query
     else {
         Get-ChildItem -Path $Path -File -Recurse | 
             Where-Object {$_.Name -match "$searchString"} -ErrorAction SilentlyContinue | 
-                Select-Object Directory, Name | 
-                    Write-Host -ForegroundColor Green
+                Select-Object Directory, Name 
     }
 }

