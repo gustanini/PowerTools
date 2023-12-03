@@ -10,7 +10,7 @@ function Find-ADInterestingACL {
     The Find-ADInterestingACL function searches Active Directory objects and filters their Access Control Lists (ACLs) based on specified rights and identity parameters. It enumerates all AD objects, retrieves their ACLs, and then filters these ACLs to find specific permissions related to the provided identities.
 
     .PARAMETER Rights
-    Specifies the types of rights to filter for in the ACLs. The default values are 'write|all|force|self' to ensure that only exploitable rights are displayed. This parameter accepts a string that represents a regular expression pattern to match against the Active Directory rights.
+    Specifies the types of rights to filter for in the ACLs. The default values are 'write|all|force|self|extended' to ensure that only exploitable rights are displayed. This parameter accepts a string that represents a regular expression pattern to match against the Active Directory rights.
 
     .PARAMETER Identity
     Specifies the identity to filter for in the ACLs. Think of it as the already compromised user you want to check. This is a mandatory parameter. The function will match this parameter value against the IdentityReference property of ACL entries.
@@ -41,7 +41,7 @@ function Find-ADInterestingACL {
     # params        
     [CmdletBinding()]
     param (
-        [string]$Rights = 'write|all|force|self',
+        [string]$Rights = 'write|all|force|self|extended',
         [Parameter(Mandatory = $true)]
         [string]$Identity,
         [string]$Domain
