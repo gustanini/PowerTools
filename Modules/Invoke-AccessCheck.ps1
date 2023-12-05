@@ -133,7 +133,7 @@ function Invoke-AccessCheck{
         [Parameter(Position = 1, Mandatory = $false)]
         [switch]$PSRemoting,
         [Alias("Server")]
-        [string]$Domain = (Get-ADDomain).DNSRoot
+        [string]$Domain
     )
     # Message
     [Console]::WriteLine("[+] Checking for Access Around The Network")
@@ -148,7 +148,10 @@ function Invoke-AccessCheck{
             Invoke-Expression (New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/samratashok/ADModule/master/Import-ActiveDirectory.ps1')
             Import-ActiveDirectory
         }
-
+        # check domain flag
+        if (!($Domain)){
+            $Domain = (Get-ADDomain).DNSRoot
+        }
         # check all computers in the current domain via HTTP
         if ($SMB) {
             Test-Smb -Domain $Domain
