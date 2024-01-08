@@ -140,8 +140,8 @@ function Invoke-AccessCheck{
     
     # check for access on all computers in current domain
     try {
-        # check for AD Module in current session
-        if (!(Get-Module -Name ActiveDirectory)) {
+        # check for AD Module in current session (use workaround for checking, get-module not working)
+        if (!(Get-Command Get-ADDomain -ErrorAction SilentlyContinue)) {
             # dependency not met
             [Console]::WriteLine("[+] Didn't find ActiveDirectory Module, pulling from Github and importing it, this will take a minute...")
             # pull and import

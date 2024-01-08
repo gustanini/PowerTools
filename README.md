@@ -23,3 +23,15 @@ This script generates the command required for crafting inter-realm/referral TGT
 
 ### Set-MacroSecurityOff
 The Set-MacroSecurityOff function disables macro security by modifying the registry. It checks if the specified registry key exists and, if present, sets the "level" value to 4, representing "No security check." If the key does not exist, the user is prompted to find the correct key path using `Set-MacroSecurityKeyOff -Key Key_Path`. The current value is printed to the screen before changing to facilitate cleanup.
+
+### Test-SMB
+The Test-Smb function checks for access to the C$ share on the specified or default computer using the SMB/CIFS protocol. It prints information about the access status to the console.
+
+### Test-PSRemoting
+The Test-PSRemoting function checks for access to the specified or default computer using PowerShell Remoting (PSRemoting) over HTTP. It prints information about the access status to the console.
+
+### Invoke-AccessCheck
+The Invoke-AccessCheck function checks for access on all computers in the current domain using either SMB/CIFS or PSRemoting over HTTP. It provides options to check access separately for SMB/CIFS or PSRemoting, and it pulls the Active Directory module from GitHub if not already imported.
+
+### Get-FunctionAddress
+Get-FunctionAddress allows you to find the memory addresses of functions within the Microsoft.Win32.UnsafeNativeMethods class. It leverages System.dll and GetType to dynamically retrieve the function address.
